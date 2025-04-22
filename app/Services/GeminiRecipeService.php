@@ -72,15 +72,16 @@ class GeminiRecipeService
 
 
         try {
-            // Usamos el Facade de Gemini instalado por el paquete google-gemini-php/client
-            // El método generateContent es comúnmente usado para prompts de texto.
-            // Usamos el modelo gemini-pro por defecto, podrías especificar otro si es necesario.
-            $result = Gemini::geminiPro()->generateContent($prompt);
+            // Log para ver el prompt enviado
+            Log::debug('Enviando prompt a Gemini:', ['prompt' => $prompt]);
 
+            $result = Gemini::geminiPro()->generateContent($prompt);
             $rawResponse = $result->text();
 
+            // Log para ver la respuesta cruda recibida
+            Log::debug('Respuesta cruda de Gemini:', ['response' => $rawResponse]);
+
             // Intentar decodificar la respuesta JSON
-            // Quitamos posibles bloques de código markdown ```json ... ``` que Gemini a veces añade
             $jsonResponse = preg_replace('/^```json\n?(.*)\n?```$/is', '$1', trim($rawResponse));
             $recipes = json_decode($jsonResponse, true);
 

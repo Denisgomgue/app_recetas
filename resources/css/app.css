@@ -1,11 +1,852 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* ===== ESTILOS CSS MOVIDOS DESDE WELCOME.BLADE.PHP ===== */
+:root {
+    --primary-color: #4CAF50;
+    --primary-light: #A5D6A7;
+    --primary-dark: #2E7D32;
+    --secondary-color: #FF5722;
+    --secondary-light: #FFAB91;
+    --text-color: #333333;
+    --text-light: #757575;
+    --background-color: #F5F5F5;
+    --card-color: #FFFFFF;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 24px;
+    --border-radius-xl: 32px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.14);
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --sidebar-width: 280px;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    min-height: 100vh;
+    /* display: flex; */
+    /* Quitado - El layout de Breeze maneja esto */
+    /* flex-direction: column; */
+    /* Quitado */
+}
+
+/* Layout principal */
+/* .app-container ya no se usa directamente, el layout lo maneja */
+
+.main-content {
+    /* Este selector podría necesitar ajustarse dependiendo de dónde se inyecte @yield */
+    flex: 1;
+    padding-bottom: 70px;
+    /* Espacio para nav móvil */
+    width: 100%;
+    max-width: 100%;
+    /* Ajustar si es necesario */
+    margin: 0 auto;
+    transition: padding var(--transition-normal);
+}
+
+.container {
+    /* Contenedor específico para el contenido de welcome.blade.php */
+    width: 100%;
+    max-width: 480px;
+    /* Mantenemos el ancho original */
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Header */
+.app-header {
+    /* Usado en partials/header.blade.php */
+    background-color: var(--card-color);
+    padding: var(--spacing-md) var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-title {
+    /* Usado en partials/header.blade.php */
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+    text-align: center;
+}
+
+.app-subtitle {
+    /* Usado en partials/header.blade.php */
+    font-size: 0.9rem;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Barra de búsqueda */
+/* Los estilos .search-container, .search-input, .search-clear deben aplicarse */
+/* al HTML dentro de components/search-bar.blade.php */
+.search-container {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    /* Añadido para alinear botón */
+    align-items: center;
+    /* Añadido */
+}
+
+.search-input {
+    flex-grow: 1;
+    /* Hacer que el input ocupe espacio */
+    /* width: 100%; */
+    /* Ajustado por flex */
+    padding: 12px 40px 12px 15px;
+    /* Ajustar padding derecho si el botón está fuera */
+    border: 1px solid #E0E0E0;
+    border-radius: var(--border-radius-lg);
+    font-size: 1rem;
+    background-color: var(--card-color);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    margin-right: var(--spacing-sm);
+    /* Espacio antes del botón Buscar */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Estilo para el nuevo botón Buscar */
+.search-button {
+    padding: 10px 15px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color var(--transition-fast);
+    margin-right: var(--spacing-sm);
+    /* Espacio antes del botón Limpiar */
+}
+
+.search-button:hover {
+    background-color: var(--primary-dark);
+}
+
+
+.search-clear {
+    /* position: absolute; */
+    /* Cambiado por flex */
+    /* right: 15px; */
+    /* top: 50%; */
+    /* transform: translateY(-50%); */
+    position: relative;
+    /* Resetear position */
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    /* Ajustar tamaño */
+    height: 30px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    padding: 0;
+    /* Resetear padding */
+}
+
+.search-clear:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+}
+
+
+/* Sección de ingredientes */
+/* Estilos para components/ingredients-section.blade.php */
+.ingredients-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-title {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.ingredient-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    min-height: 40px;
+    /* Altura mínima para que no colapse */
+    /* padding: var(--spacing-sm); */
+    /* Añadir padding si se ve mejor */
+    /* border: 1px dashed #ccc; */
+    /* Borde para depuración */
+}
+
+.tag {
+    /* Estilo para tags generados por JS */
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 12px;
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.tag span {
+    margin-right: var(--spacing-sm);
+}
+
+.tag button {
+    background: none;
+    border: none;
+    color: var(--primary-dark);
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    padding: 0;
+    line-height: 1;
+    /* Asegurar que la X esté centrada */
+}
+
+.tag button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Indicador de carga */
+/* Estilos para components/loading-indicator.blade.php */
+.loading-indicator {
+    display: flex;
+    /* Se controla display con JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: var(--spacing-xl) 0;
+    color: var(--text-light);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(76, 175, 80, 0.2);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--spacing-md);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Tarjetas de recetas */
+/* Estilos para el HTML generado en la función renderRecipes de JS */
+.recipes-container {
+    display: flex;
+    /* Cambiado de nuevo a flex, grid se añade con media query */
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.recipe-card-wrapper {
+    /* Contenedor para card + details */
+    margin-bottom: var(--spacing-md);
+    background-color: var(--card-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    /* Para contener los bordes redondeados */
+    transition: box-shadow var(--transition-fast);
+}
+
+.recipe-card-wrapper:hover {
+    box-shadow: var(--shadow-md);
+}
+
+
+.recipe-card {
+    /* background-color: var(--card-color); */
+    /* Ya está en wrapper */
+    /* border-radius: var(--border-radius-md); */
+    /* Ya está en wrapper */
+    /* overflow: hidden; */
+    /* box-shadow: var(--shadow-sm); */
+    /* Ya está en wrapper */
+    transition: all var(--transition-fast);
+    display: flex;
+    padding: var(--spacing-md);
+    margin-bottom: 0;
+}
+
+/* .recipe-card:hover { */
+/* Hover en wrapper */
+/* box-shadow: var(--shadow-md); */
+/* transform: translateY(-2px); */
+/* Quitado, puede causar problemas con flex/grid */
+/* } */
+
+.recipe-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-right: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.recipe-content {
+    flex-grow: 1;
+    min-width: 0;
+    /* Para que el texto se corte correctamente */
+}
+
+.recipe-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipe-subtitle {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.recipe-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-left: var(--spacing-md);
+}
+
+.action-button {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--border-radius-sm);
+    background-color: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.action-button:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+/* Botón Flotante Agregar */
+/* Estilos para components/add-button.blade.php */
+.add-button {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 80px;
+    /* Ajustar si se solapa con bottom-nav */
+    right: 20px;
+    box-shadow: var(--shadow-md);
+    z-index: 5;
+    transition: all var(--transition-fast);
+}
+
+.add-button:hover {
+    background-color: #E64A19;
+    transform: scale(1.05);
+}
+
+/* Navegación inferior (móvil) */
+/* Estilos para partials/bottom-nav.blade.php */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--card-color);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 0.75rem;
+    padding: 6px 0;
+    transition: all var(--transition-fast);
+    position: relative;
+    flex: 1;
+    /* Para que ocupen el espacio equitativamente */
+    text-align: center;
+}
+
+.nav-item .icon {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* Sidebar (escritorio) */
+/* Estilos para partials/sidebar.blade.php */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--card-color);
+    height: 100vh;
+    position: fixed;
+    left: -100%;
+    /* Oculto por defecto en móvil */
+    top: 0;
+    z-index: 20;
+    box-shadow: var(--shadow-lg);
+    transition: left var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.sidebar-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+}
+
+.sidebar-content {
+    padding: var(--spacing-lg);
+    flex: 1;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+}
+
+.sidebar-nav-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-nav-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.sidebar-nav-item .icon {
+    font-size: 1.2rem;
+    margin-right: var(--spacing-md);
+    width: 24px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botón de menú (móvil/tablet) */
+.menu-button {
+    display: none;
+    /* Oculto por defecto, visible en media query */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    z-index: 15;
+    box-shadow: var(--shadow-md);
+    align-items: center;
+    /* Corregido de align-items */
+    justify-content: center;
+    /* Corregido de justify-content */
+    font-size: 1.2rem;
+    transition: all var(--transition-fast);
+}
+
+.menu-button:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+/* Overlay para sidebar en móvil */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 15;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+/* Detalles de receta expandibles */
+/* Estilos para el HTML generado en la función renderRecipes de JS */
+.recipe-details {
+    /* display: none; Se controla con JS */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    padding: 0 var(--spacing-md);
+    /* Padding horizontal */
+    /* background-color: var(--card-color); */
+    /* Quitado - debe estar en wrapper */
+}
+
+.recipe-details.active {
+    /* display: block; */
+    max-height: 1000px;
+    /* Un valor suficientemente grande */
+    padding: var(--spacing-md);
+    /* Padding completo cuando está activo */
+    border-top: 1px solid #eee;
+    /* Separador visual */
+}
+
+.detail-section {
+    margin-bottom: var(--spacing-md);
+}
+
+.detail-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+}
+
+.ingredients-list,
+.instructions-list {
+    padding-left: var(--spacing-lg);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.ingredients-list li,
+.instructions-list li {
+    margin-bottom: var(--spacing-xs);
+}
+
+.recipe-meta {
+    display: flex;
+    flex-wrap: wrap;
+    /* Para que se ajusten en pantallas pequeñas */
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.recipe-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Estado vacío */
+/* Estilos para components/empty-state.blade.php */
+.empty-state {
+    display: flex;
+    /* Se controla con JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    text-align: center;
+    color: var(--text-light);
+    background-color: var(--card-color);
+    /* Fondo blanco */
+    border-radius: var(--border-radius-md);
+    /* Bordes redondeados */
+    box-shadow: var(--shadow-sm);
+    /* Sombra */
+    margin-top: var(--spacing-lg);
+    /* Margen superior */
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-light);
+}
+
+.empty-text {
+    font-size: 1rem;
+    max-width: 300px;
+    line-height: 1.5;
+}
+
+
+/* Media queries para responsive */
+@media (min-width: 768px) {
+    .bottom-nav {
+        display: none;
+    }
+
+    .menu-button {
+        display: flex;
+        /* Mostrar botón de menú en tablet+ */
+    }
+
+    .main-content {
+        padding-bottom: var(--spacing-md);
+        /* max-width: 1200px; */
+        /* Quitar max-width para que ocupe más con sidebar */
+    }
+
+    .container {
+        max-width: 800px;
+        /* Ajustar ancho del contenedor principal */
+        padding: var(--spacing-lg);
+    }
+
+    .add-button {
+        bottom: 30px;
+        right: 30px;
+    }
+
+    .recipes-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: var(--spacing-lg);
+    }
+
+    .recipe-card-wrapper {
+        /* Los wrappers van en la grid */
+        margin-bottom: 0;
+        /* Quitar margen si se usa grid gap */
+    }
+}
+
+@media (min-width: 1024px) {
+
+    /* Ajustes para cuando el sidebar está presente */
+    .sidebar {
+        left: 0;
+        /* Sidebar visible por defecto en escritorio */
+    }
+
+    .menu-button {
+        display: none;
+        /* Ocultar botón de menú en escritorio */
+    }
+
+    .main-content {
+        /* Ajustar padding izquierdo para dejar espacio al sidebar */
+        padding-left: calc(var(--sidebar-width) + var(--spacing-lg));
+        padding-right: var(--spacing-lg);
+        /* Añadir padding derecho */
+        /* max-width: none; */
+        /* Permitir que ocupe el resto */
+    }
+
+    /* .app-header { */
+    /* El header de Breeze no necesita estos ajustes */
+    /* padding-left: calc(var(--sidebar-width) + var(--spacing-md)); */
+    /* width: calc(100% - var(--sidebar-width)); */
+    /* left: var(--sidebar-width); */
+    /* } */
+    .add-button {
+        /* Ajustar posición si interfiere con sidebar */
+        right: calc(var(--spacing-lg) + 20px);
+        /* Ejemplo */
+    }
+
+    /* Ajuste para el .container dentro del main-content con sidebar */
+    .main-content>.container {
+        max-width: 900px;
+        /* Aumentar max-width del contenido principal */
+        margin-left: 0;
+        /* Alinear a la izquierda */
+        margin-right: auto;
+    }
+
+}
+
+/* Clase para controlar sidebar en móvil/tablet */
+@media (max-width: 1023px) {
+    body.sidebar-open .sidebar {
+        left: 0;
+    }
+
+    body.sidebar-open .sidebar-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Ajustar padding del main-content cuando el sidebar está abierto en móvil/tablet */
+    /* body.sidebar-open .main-content { */
+    /* padding-left: var(--sidebar-width); */
+    /* Opcional: ¿Desplazar contenido? */
+    /* } */
+
+}
+
+/* ===== FIN DE ESTILOS CSS MOVIDOS ===== */
