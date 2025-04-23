@@ -4,7 +4,7 @@
 @section('title', 'Buscar Recetas')
 
 @section('content')
-<div class="container">
+    <div class="container">
     {{-- Barra de búsqueda --}}
     <x-search-bar />
 
@@ -20,24 +20,24 @@
     <!-- Contenedor de recetas -->
     <div class="recipes-container" id="recipesContainer">
         {{-- Las recetas se cargarán aquí dinámicamente mediante JavaScript --}}
-    </div>
-
+        </div>
+        
     {{-- Botón flotante de agregar (Ahora usa el componente) --}}
     <x-add-button />
-</div>
+        </div>
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
         // --- Referencias a elementos del DOM --- 
-        const searchInput = document.getElementById('searchInput'); 
-        const clearSearch = document.getElementById('clearSearch'); 
-        const ingredientsTags = document.getElementById('ingredientsTags'); 
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const ingredientsTags = document.getElementById('ingredientsTags');
         const loadingIndicator = document.getElementById('loadingIndicator'); 
         const emptyState = document.getElementById('emptyState'); 
-        const recipesContainer = document.getElementById('recipesContainer'); 
-        const addButton = document.getElementById('addButton'); 
+            const recipesContainer = document.getElementById('recipesContainer');
+            const addButton = document.getElementById('addButton');
         const searchButton = document.getElementById('searchButton'); // Botón Buscar
 
         // --- LIMPIAR ESTADO INICIAL --- 
@@ -98,24 +98,24 @@
             // Log para ver qué ingredientes se envían (si se habilita console.log)
             console.log('Enviando ingredientes:', ingredients);
 
-            if (ingredients.length === 0) {
-                recipesContainer.innerHTML = ''; 
+                if (ingredients.length === 0) {
+                    recipesContainer.innerHTML = '';
                 checkEmptyState();
-                return;
-            }
-            
+                    return;
+                }
+                
             loadingIndicator.style.display = 'flex';
             recipesContainer.innerHTML = '';
             recipesContainer.style.display = 'none';
-            emptyState.style.display = 'none';
+                emptyState.style.display = 'none';
             
              const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
              const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : null;
              
              const fetchConfig = {
-                 method: 'POST',
-                 headers: {
-                     'Content-Type': 'application/json',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                      'Accept': 'application/json',
                  },
                  body: JSON.stringify({ ingredients: ingredients })
@@ -126,18 +126,18 @@
              }
              
             fetch('/recipes/search', fetchConfig)
-            .then(response => {
+                .then(response => {
                 loadingIndicator.style.display = 'none';
-                if (!response.ok) {
+                    if (!response.ok) {
                      return response.json().then(errData => {
                         throw new Error(`HTTP error ${response.status}: ${JSON.stringify(errData)}`);
                     }).catch(() => {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     });
-                }
-                return response.json();
-            })
-            .then(data => {
+                    }
+                    return response.json();
+                })
+                .then(data => {
                 // Log para ver qué datos se reciben del backend (si se habilita console.log)
                 console.log('Datos recibidos del backend:', data);
 
@@ -145,13 +145,13 @@
                     renderRecipes(data.recipes);
                     recipesContainer.style.display = ''; 
                     emptyState.style.display = 'none';
-                } else {
+                    } else {
                     recipesContainer.innerHTML = ''; 
                     recipesContainer.style.display = 'none';
                     checkEmptyState(); 
-                }
-            })
-            .catch(error => {
+                    }
+                })
+                .catch(error => {
                 loadingIndicator.style.display = 'none';
                 console.error('Error buscando recetas:', error);
                 recipesContainer.innerHTML = `<div style="color: red; text-align: center; padding: 20px; background-color: #ffebee; border-radius: 8px;">Error al cargar recetas. ${error.message}</div>`;
@@ -164,7 +164,7 @@
         function renderRecipes(recipesData) {
              if (!recipesContainer || !emptyState) return;
             // ... (código original de renderRecipes) ...
-            recipesContainer.innerHTML = ''; 
+                recipesContainer.innerHTML = '';
             if (!recipesData || recipesData.length === 0) {
                 checkEmptyState();
                 return;
@@ -175,7 +175,7 @@
                     <div class="recipe-card-wrapper">
                         <div class="recipe-card">
                             <div class="recipe-avatar">${recipe.titulo ? recipe.titulo.charAt(0).toUpperCase() : 'R'}</div>
-                            <div class="recipe-content">
+                        <div class="recipe-content">
                                 <h3 class="recipe-title">${escapeHtml(recipe.titulo || 'Receta sin título')}</h3>
                                 <p class="recipe-subtitle">${escapeHtml(recipe.descripcion || '')}</p>
                             </div>
@@ -210,9 +210,9 @@
                                 ${recipe.tiempo_preparacion ? `<div class="recipe-meta-item"><i class="far fa-clock"></i><span>${escapeHtml(recipe.tiempo_preparacion ?? '')}</span></div>` : ''}
                                 ${recipe.dificultad ? `<div class="recipe-meta-item"><i class="fas fa-fire"></i><span>${escapeHtml(recipe.dificultad ?? '')}</span></div>` : ''}
                             </div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
                 recipesContainer.innerHTML += recipeHtml;
             });
         }
@@ -333,6 +333,6 @@
             console.error('Error: Botón de agregar (addButton) no encontrado.');
         }
 
-    });
-</script>
+        });
+    </script>
 @endpush

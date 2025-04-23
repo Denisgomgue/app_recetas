@@ -1,4 +1,5 @@
 import './bootstrap';
+import './recipe-search.js'; // Add this line
 
 import Alpine from 'alpinejs';
 

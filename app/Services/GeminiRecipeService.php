@@ -2,16 +2,20 @@
 
 namespace App\Services;
 
-use Gemini\Laravel\Facades\Gemini;
+// Quitar o comentar el Facade que no funciona
+// use Gemini\Laravel\Facades\Gemini;
+use Gemini\Client; // <--- Importar la clase cliente directamente (ASUNCIÓN)
 use Gemini\Data\Content;
 use Gemini\Enums\Role;
 use Exception;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Log;
+use Gemini\Enums\ModelType; // <-- Necesario para el modelo?
 
 class GeminiRecipeService
 {
     protected string $apiKey;
+    protected Client $geminiClient; // <--- Propiedad para guardar el cliente
 
     public function __construct()
     {
@@ -22,10 +26,14 @@ class GeminiRecipeService
             Log::error('Gemini API Key no está configurada en config/services.php o .env');
             throw new Exception('Gemini API Key no configurada.');
         }
-        // Configurar la API Key para el cliente de Gemini (asumiendo que el Facade lo maneja o se configura globalmente)
-        // Si no, podríamos necesitar instanciar el cliente aquí:
-        // $client = Gemini::client($this->apiKey);
-        // $this->geminiClient = $client; // Guardar el cliente si es necesario
+
+        // Instanciar el cliente directamente
+        try {
+            $this->geminiClient = \Gemini::client($this->apiKey); // <--- Crear instancia aquí
+        } catch (\Throwable $th) {
+            Log::error('Error al instanciar el cliente Gemini: ' . $th->getMessage());
+            throw new Exception('No se pudo inicializar el cliente Gemini.');
+        }
     }
 
     /**
@@ -70,12 +78,16 @@ class GeminiRecipeService
         ]
         PROMPT;
 
-
         try {
             // Log para ver el prompt enviado
             Log::debug('Enviando prompt a Gemini:', ['prompt' => $prompt]);
 
-            $result = Gemini::geminiPro()->generateContent($prompt);
+            // Usar la instancia del cliente con la sintaxis correcta (esperada)
+            $result = $this->geminiClient->generativeModel('gemini-1.0-pro')->generateContent($prompt);
+            // Líneas anteriores incorrectas comentadas:
+            // $result = $this->geminiClient->geminiPro()->generateContent($prompt); // ASUNCIÓN basada en uso anterior
+            // $result = Gemini::generativeModel('gemini-1.0-pro')->generateContent($prompt); // Usando Facade
+
             $rawResponse = $result->text();
 
             // Log para ver la respuesta cruda recibida
